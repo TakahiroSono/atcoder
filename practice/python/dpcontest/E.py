@@ -1,13 +1,19 @@
 N, W = map(int, input().split())
-WV = [list(map(int, input().split())) for _ in range(N)]
+dp = [[float('inf')] * 110000 for _ in range(N+1)]
 
-dp = [[0] * (W+1) for _ in range(N+1)]
+dp[0][0] = 0
+for i in range(1, N+1):
+  w, v = map(int, input().split())
+  for j in range(110000):
+    dp[i][j] = dp[i-1][j]
+    if j-v < 0: continue
+    dp[i][j] = min(w + dp[i-1][j-v], dp[i-1][j])
 
-for n in range(1, N+1):
-  for w in range(W+1):
-    if (w - WV[n-1][0] >= 0):
-      dp[n][w] = max(dp[n-1][w], dp[n-1][w - WV[n-1][0]] + WV[n-1][1])
-    else:
-      dp[n][w] = dp[n-1][w]
+ans = 0
 
-print(dp[-1][-1])
+for i in range(110000):
+  if dp[-1][i] > W: continue
+  ans = max(ans, i)
+
+print(ans)
+# print(dp[-1][:100])

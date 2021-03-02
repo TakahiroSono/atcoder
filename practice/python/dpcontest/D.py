@@ -11,14 +11,26 @@
 
 # print(dp[-1][-1])
 
-import numpy as np
+# import numpy as np
+
+# N, W = map(int, input().split())
+# items = [tuple(map(int, input().split())) for _ in range(N)]
+# dp = np.zeros(shape=W + 1, dtype=np.int64)
+
+# for weight, value in items:
+#     dp[weight:] = np.maximum(dp[weight:], dp[:-weight] + value)
+
+# print(dp[-1])
+# print(dp)
 
 N, W = map(int, input().split())
-items = [tuple(map(int, input().split())) for _ in range(N)]
-dp = np.zeros(shape=W + 1, dtype=np.int64)
+dp = [[0] * (W+1) for _ in range(N+1)]
 
-for weight, value in items:
-    dp[weight:] = np.maximum(dp[weight:], dp[:-weight] + value)
+for i in range(1, N+1):
+    w, v = map(int, input().split())
+    for j in range(W+1):
+        dp[i][j] = dp[i-1][j]
+        if w <= j:
+            dp[i][j] = max(v + dp[i-1][j-w], dp[i][j])
 
-print(dp[-1])
-print(dp)
+print(dp[-1][-1])
